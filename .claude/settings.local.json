@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "PowerShell($src = \"C:\\\\Users\\\\Felipe S. Oliveira\\\\Documents\\\\Projects\\\\portfolio-temp\"; $dest = \"C:\\\\Users\\\\Felipe S. Oliveira\\\\Documents\\\\Projects\\\\Fe - Portifolio 3\"; Get-ChildItem -Path $src -Force | ForEach-Object { Move-Item -Path $_.FullName -Destination $dest -Force }; Write-Host \"Done\")",
+      "PowerShell($base = \"C:\\\\Users\\\\Felipe S. Oliveira\\\\Documents\\\\Projects\\\\Fe - Portifolio 3\\\\src\"; New-Item -ItemType Directory -Path \"$base\\\\components\\\\ui\" -Force | Out-Null; New-Item -ItemType Directory -Path \"$base\\\\components\\\\layout\" -Force | Out-Null; New-Item -ItemType Directory -Path \"$base\\\\sections\" -Force | Out-Null; New-Item -ItemType Directory -Path \"$base\\\\styles\" -Force | Out-Null; New-Item -ItemType Directory -Path \"$base\\\\lib\" -Force | Out-Null; New-Item -ItemType Directory -Path \"$base\\\\types\" -Force | Out-Null; Write-Host \"Folders created\")",
+      "Bash(npm run *)",
+      "Bash(node -e ' *)",
+      "Bash(npm install *)",
+      "Bash(curl -v \"https://cdn.simpleicons.org/amazonaws/ffffff\")",
+      "Bash(curl -s \"https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/amazonaws.svg\")",
+      "Bash(gh api *)",
+      "WebFetch(domain:api.github.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(ls \"C:\\\\Users\\\\Felipe S. Oliveira\\\\Documents\\\\Projects\")"
+    ]
+  }
+}
