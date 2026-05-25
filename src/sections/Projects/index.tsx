@@ -48,7 +48,6 @@ const PROJECTS_PUBLIC: Project[] = [
     tech: "NEXT.JS",
     year: "2025",
     url: "https://github.com/felipesantosdd/Digimon-Board-Clash-Assistant",
-    image: "/projects/digimon-board-clash.png",
     description:
       "Aplicativo completo para o board game Digimon Board Clash. Sistema de combate D20, evolução com XP oculto, 466 Digimons cadastrados e painel administrativo para partidas de 2 a 6 jogadores.",
   },
@@ -58,7 +57,6 @@ const PROJECTS_PUBLIC: Project[] = [
     tech: "ELECTRON",
     year: "2025",
     url: "https://github.com/felipesantosdd/cash-control",
-    image: "/projects/cash-control.png",
     description:
       "App desktop multiplataforma para controle financeiro pessoal. Gerenciamento de transações por categorias, relatórios de gastos e receitas com SQLite para uso 100% offline.",
   },
@@ -68,7 +66,6 @@ const PROJECTS_PUBLIC: Project[] = [
     tech: "TYPESCRIPT",
     year: "2026",
     url: "https://github.com/felipesantosdd/RE-Board-Game-Card-Creator",
-    image: "/projects/re-card-creator.jpg",
     description:
       "Ferramenta web para criação de cards customizados para o board game de Resident Evil 3. Geração de imagens via canvas, importação por spec e deploy automatizado na Vercel.",
   },
@@ -78,7 +75,6 @@ const PROJECTS_PUBLIC: Project[] = [
     tech: "VITE",
     year: "2026",
     url: "https://github.com/felipesantosdd/Divinit-2-Path",
-    image: "/projects/divinit-2-path.png",
     description:
       "Guia interativo e rastreador de missões para Divinity: Original Sin 2. Interface dark responsiva com progresso persistido localmente via SQLite (sql.js), organizado por ato.",
   },
@@ -88,7 +84,6 @@ const PROJECTS_PUBLIC: Project[] = [
     tech: "PYTHON",
     year: "2025",
     url: "https://github.com/felipesantosdd/Recheiae",
-    image: "/projects/recheiae.jpg",
     description:
       "Catálogo digital com área admin restrita ao ambiente de desenvolvimento. Exporta snapshot do banco SQLite no build para operar como site estático em produção sem custo de API.",
   },
@@ -98,7 +93,6 @@ const PROJECTS_PUBLIC: Project[] = [
     tech: "UNITY",
     year: "2024",
     url: "https://github.com/PiSuGames/DigiChess",
-    image: "/projects/digichess-1.jpg",
     description:
       "Jogo auto-chess desenvolvido em Unity com C# ambientado no universo Digimon. Sistema de compra e fusão de fichas, digievolução automática ao juntar 3 iguais e combate no Coliseu Digital.",
   },
@@ -108,7 +102,6 @@ const PROJECTS_PUBLIC: Project[] = [
     tech: "NEXT.JS",
     year: "2025",
     url: "https://github.com/felipesantosdd/talessa-page",
-    image: "/projects/talessa.png",
     description:
       "Site institucional em Next.js com suporte a internacionalização. Seções de hero, projetos, serviços e contato com design responsivo e traduções gerenciadas via arquivos de configuração.",
   },
@@ -118,7 +111,6 @@ const PROJECTS_PUBLIC: Project[] = [
     tech: "PYTHON",
     year: "2025",
     url: "https://github.com/felipesantosdd/Cronicas-do-Maculado",
-    image: "/projects/cronicas-do-maculado.jpg",
     description:
       "Fork do boss tracker para Elden Ring traduzido e adaptado integralmente para PT-BR. Rastreia chefes em tempo real via leitura do save file, overlay para OBS, suporte ao DLC Shadow of the Erdtree e instalador Windows.",
   },
