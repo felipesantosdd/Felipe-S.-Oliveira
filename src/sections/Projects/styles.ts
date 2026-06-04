@@ -288,14 +288,14 @@ export const CardDescription = styled.p`
   user-select: none;
 `;
 
-export const CardDeploy = styled.span<{ $denied?: boolean; $public?: boolean }>`
+export const CardDeploy = styled.span<{ $denied?: boolean; $public?: boolean; $inDev?: boolean }>`
   font-family: var(--font-jetbrains), monospace;
   font-weight: 700;
   font-size: 10px;
   letter-spacing: 1.2px;
   padding: 14px 24px 20px;
-  color: ${({ $denied, $public }) =>
-    $denied ? "#dc2626" : $public ? "#f5f5f5" : "#dc2626"};
+  color: ${({ $denied, $public, $inDev }) =>
+    $inDev ? "#d97706" : $denied ? "#dc2626" : $public ? "#f5f5f5" : "#dc2626"};
   transition: color 0.2s;
 `;
 

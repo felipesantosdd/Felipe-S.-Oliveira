@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   ProjectsSection,
   ProjectsInner,
@@ -38,21 +38,47 @@ interface Project {
   description: string;
   url?: string;
   image?: string;
+  images?: string[]; /* múltiplas imagens — ativa cycling automático */
+  inDev?: boolean;   /* exibe badge "em desenvolvimento" */
 }
 
 /* ── Projetos públicos (GitHub) ── */
 const PROJECTS_PUBLIC: Project[] = [
   {
     id: "P.001",
+    name: "Astera Data Bank",
+    tech: "NEXT.JS",
+    year: "2025",
+    url: "https://astera-data-bank.vercel.app",
+    inDev: true,
+    images: [
+      "/projects/astera-1.png",
+      "/projects/astera-2.png",
+      "/projects/astera-3.png",
+    ],
+    description:
+      "Companion app completo para Monster Hunter World em PT-BR. Árvore de ingredientes interativa, rastreador de missões com filtros por rank/tipo/objetivo e árvore de forja de armas e armaduras.",
+  },
+  {
+    id: "P.002",
     name: "Digimon Board Clash",
     tech: "NEXT.JS",
     year: "2025",
-    url: "https://github.com/felipesantosdd/Digimon-Board-Clash-Assistant",
+    url: "https://digimon-board-clash-assistant-1fdh.vercel.app",
+    images: [
+      "/projects/digimon-1.png",
+      "/projects/digimon-2.png",
+      "/projects/digimon-3.png",
+      "/projects/digimon-4.png",
+      "/projects/digimon-5.png",
+      "/projects/digimon-6.png",
+      "/projects/digimon-7.png",
+    ],
     description:
       "Aplicativo completo para o board game Digimon Board Clash. Sistema de combate D20, evolução com XP oculto, 466 Digimons cadastrados e painel administrativo para partidas de 2 a 6 jogadores.",
   },
   {
-    id: "P.002",
+    id: "P.003",
     name: "Cash Control",
     tech: "ELECTRON",
     year: "2025",
@@ -61,56 +87,73 @@ const PROJECTS_PUBLIC: Project[] = [
       "App desktop multiplataforma para controle financeiro pessoal. Gerenciamento de transações por categorias, relatórios de gastos e receitas com SQLite para uso 100% offline.",
   },
   {
-    id: "P.003",
+    id: "P.004",
     name: "RE3 Card Creator",
     tech: "TYPESCRIPT",
     year: "2026",
-    url: "https://github.com/felipesantosdd/RE-Board-Game-Card-Creator",
+    url: "https://re-board-game-card-creator.vercel.app",
+    images: [
+      "/projects/re-1.png",
+      "/projects/re-2.png",
+      "/projects/re-3.png",
+    ],
     description:
       "Ferramenta web para criação de cards customizados para o board game de Resident Evil 3. Geração de imagens via canvas, importação por spec e deploy automatizado na Vercel.",
   },
   {
-    id: "P.004",
+    id: "P.005",
     name: "Divinit-2-Path",
     tech: "VITE",
     year: "2026",
-    url: "https://github.com/felipesantosdd/Divinit-2-Path",
+    url: "https://divinit-2-path.vercel.app",
+    inDev: true,
+    images: [
+      "/projects/divinit-2-path.png",
+      "/projects/divinity-1.png",
+      "/projects/divinity-2.png",
+    ],
     description:
       "Guia interativo e rastreador de missões para Divinity: Original Sin 2. Interface dark responsiva com progresso persistido localmente via SQLite (sql.js), organizado por ato.",
   },
   {
-    id: "P.005",
+    id: "P.006",
     name: "Recheiae",
     tech: "PYTHON",
     year: "2025",
     url: "https://github.com/felipesantosdd/Recheiae",
+    images: [
+      "/projects/recheiae-1.png",
+      "/projects/recheiae-2.png",
+      "/projects/recheiae-3.png",
+    ],
     description:
       "Catálogo digital com área admin restrita ao ambiente de desenvolvimento. Exporta snapshot do banco SQLite no build para operar como site estático em produção sem custo de API.",
   },
   {
-    id: "P.006",
-    name: "DigiChess",
-    tech: "UNITY",
-    year: "2024",
-    url: "https://github.com/PiSuGames/DigiChess",
-    description:
-      "Jogo auto-chess desenvolvido em Unity com C# ambientado no universo Digimon. Sistema de compra e fusão de fichas, digievolução automática ao juntar 3 iguais e combate no Coliseu Digital.",
-  },
-  {
-    id: "P.007",
+    id: "P.008",
     name: "Talessa",
     tech: "NEXT.JS",
     year: "2025",
     url: "https://github.com/felipesantosdd/talessa-page",
+    inDev: true,
+    images: [
+      "/projects/talessa-1.png",
+      "/projects/talessa-2.png",
+    ],
     description:
       "Site institucional em Next.js com suporte a internacionalização. Seções de hero, projetos, serviços e contato com design responsivo e traduções gerenciadas via arquivos de configuração.",
   },
   {
-    id: "P.008",
+    id: "P.009",
     name: "Crônicas do Maculado",
     tech: "PYTHON",
     year: "2025",
     url: "https://github.com/felipesantosdd/Cronicas-do-Maculado",
+    images: [
+      "/projects/maculado-1.png",
+      "/projects/maculado-2.png",
+      "/projects/maculado-3.png",
+    ],
     description:
       "Fork do boss tracker para Elden Ring traduzido e adaptado integralmente para PT-BR. Rastreia chefes em tempo real via leitura do save file, overlay para OBS, suporte ao DLC Shadow of the Erdtree e instalador Windows.",
   },
@@ -195,6 +238,16 @@ const PROJECTS_CONFIDENTIAL: Project[] = [
 /* ── Card ── */
 function Card({ project }: { project: Project }) {
   const [denied, setDenied] = useState(false);
+  const [activeImg, setActiveImg] = useState(0);
+
+  /* Cycling automático quando o projeto tem múltiplas imagens */
+  useEffect(() => {
+    if (!project.images || project.images.length < 2) return;
+    const timer = setInterval(() => {
+      setActiveImg((i) => (i + 1) % project.images!.length);
+    }, 2800);
+    return () => clearInterval(timer);
+  }, [project.images]);
 
   const handleClick = () => {
     if (project.url) {
@@ -204,6 +257,11 @@ function Card({ project }: { project: Project }) {
       setTimeout(() => setDenied(false), 2500);
     }
   };
+
+  /* Resolve qual imagem exibir: images[] tem prioridade sobre image */
+  const hasImages = project.images && project.images.length > 0;
+  const hasSingleImage = !!project.image;
+  const showImage = hasImages || hasSingleImage;
 
   return (
     <ProjectCard $denied={denied} onClick={handleClick}>
@@ -215,25 +273,47 @@ function Card({ project }: { project: Project }) {
         </AccessOverlay>
       )}
 
-      {project.image ? (
+      {showImage && (
         <CardImageWrap>
-          <CardImageEl src={project.image} alt={project.name} />
-          <CardImageOverlay />
+          {hasImages ? (
+            /* Cross-fade entre as imagens do array */
+            project.images!.map((src, i) => (
+              <CardImageEl
+                key={src}
+                src={src}
+                alt={`${project.name} — tela ${i + 1}`}
+                style={{
+                  position: i === 0 ? "relative" : "absolute",
+                  inset: 0,
+                  opacity: i === activeImg ? 1 : 0,
+                  transition: "opacity 0.8s ease",
+                  zIndex: i === activeImg ? 1 : 0,
+                }}
+              />
+            ))
+          ) : (
+            <CardImageEl src={project.image} alt={project.name} />
+          )}
+          <CardImageOverlay style={{ zIndex: 2 }} />
         </CardImageWrap>
-      ) : null}
+      )}
 
-      <CardTop $compact={!!project.image}>
+      <CardTop $compact={showImage}>
         <CardName>{project.name}</CardName>
         <CardTech>{project.tech}</CardTech>
       </CardTop>
 
-      {!project.image && (
+      {!showImage && (
         <CardDescription>{project.description}</CardDescription>
       )}
 
-      <CardDeploy $denied={denied} $public={!!project.url}>
-        {project.url
-          ? "VER NO GITHUB →"
+      <CardDeploy $denied={denied} $public={!!project.url} $inDev={project.inDev}>
+        {project.inDev
+          ? "// EM DESENVOLVIMENTO"
+          : project.url
+          ? project.images
+            ? "VER EM PRODUÇÃO →"
+            : "VER NO GITHUB →"
           : denied
           ? "[ NEGADO ]"
           : "PROJETO CONFIDENCIAL ×"}
