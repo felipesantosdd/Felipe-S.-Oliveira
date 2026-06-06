@@ -45,6 +45,16 @@ interface Project {
 /* ── Projetos públicos (GitHub) ── */
 const PROJECTS_PUBLIC: Project[] = [
   {
+    id: "P.010",
+    name: "MHW Voice Modder",
+    tech: "PYTHON",
+    year: "2026",
+    url: "https://github.com/felipesantosdd/mhw-voice-modder",
+    images: ["/projects/mhw-voice-modder.png"],
+    description:
+      "GUI para modding de voz de Monster Hunter World. Abre .nbnk/.bnk (Wwise SoundBank), mapeia grupos de ação via hierarquia HIRC, extrai e substitui áudio com match automático por duração.",
+  },
+  {
     id: "P.001",
     name: "Astera Data Bank",
     tech: "NEXT.JS",
