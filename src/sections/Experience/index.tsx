@@ -48,44 +48,81 @@ const SEG_W = 2 * COIN_RADIUS * Math.sin(Math.PI / COIN_SEGMENTS);
 const EXPERIENCES = [
   {
     id: "01",
-    company: "Pasquali",
-    logo: "/logos/pasquali.png",
-    edgeColor: "#FFFFF9",
-    lightBg: true,
-    url: "https://www.linkedin.com/company/pasquali-solution-tech/posts/?feedView=all",
-    period: "08/2024 – Atual",
-    role: "Desenvolvedor Full Stack",
+    company: "Capgemini",
+    logo: "",
+    initials: "CGI",
+    edgeColor: "#0070AD",
+    lightBg: false,
+    url: "https://www.linkedin.com/company/capgemini/",
+    period: "04/2026 – Atual",
+    role: "Senior Python Engineer, Systems Integration",
     description:
-      "Atuando diretamente em produção desde o primeiro mês, construo interfaces com React.js e TypeScript enquanto desenvolvo serviços de back-end com Python e FastAPI — do design da API até o deploy. Incorporei ferramentas de IA ao fluxo de trabalho (Cursor, Copilot, Claude) e sinto na prática o que isso representa em velocidade e qualidade de entrega. Cada PR passa por revisão guiada por SOLID e Clean Code, porque acredito que código sustentável é parte do produto.",
-    code: `// FastAPI — endpoint com autenticação JWT
-@router.get("/users/me", response_model=UserOut)
-async def get_current_user(
-  token: str = Depends(oauth2_scheme),
-  db: AsyncSession = Depends(get_db)
-):
-  payload = decode_token(token)
-  user = await db.get(User, payload["sub"])
-  if not user:
-    raise HTTPException(status_code=404)
-  return user
+      "Integração enterprise real: conectei SAP S/4HANA, Salesforce, Siebel, Oracle e Databricks com Python, FastAPI e Apache Kafka. Em três meses entreguei cerca de 20 integrações cobrindo 47 itens de backlog em 7 repositórios, inclusive uma família de 32 tabelas num único merge request. Cada entrega partiu da especificação funcional e do mapeamento de dados, passou pela validação contra DDL e banco real, e chegou ao contrato OpenAPI publicado. 56 tópicos Kafka com Avro e Schema Registry, dead-letter queues e observabilidade estruturada: mensagem que falha é retida para reprocessamento, não descartada em silêncio.",
+    code: `# Kafka consumer — Avro com Schema Registry
+from confluent_kafka import Consumer
+from confluent_kafka.schema_registry.avro import AvroDeserializer
 
-// React — componente reutilizável tipado
-interface ButtonProps {
-  label: string
-  variant?: 'primary' | 'ghost'
-  onClick?: () => void
-}
+consumer = Consumer({
+  "bootstrap.servers": KAFKA_BROKERS,
+  "group.id": "salesforce-sync",
+  "auto.offset.reset": "earliest",
+  "enable.auto.commit": False,
+})
 
-export const Button: FC<ButtonProps> = ({
-  label, variant = 'primary', onClick
-}) => (
-  <button className={styles[variant]} onClick={onClick}>
-    {label}
-  </button>
-)`,
+def process(msg, ctx):
+  order = deserializer(msg.value(), ctx)
+  r = salesforce.upsert("Order__c", order)
+  if r.status_code != 200:
+    dlq_producer.produce(DLQ_TOPIC, msg.value())
+    return
+  consumer.commit(asynchronous=False)
+
+# FastAPI — contrato OpenAPI gerado da rota
+@router.post(
+  "/orders/sync",
+  response_model=OrderSyncOut,
+  responses={422: {"model": ErrorEnvelope}},
+)
+async def sync_order(body: OrderSyncIn):
+  result = await sap.push_order(body)
+  return OrderSyncOut(id=result.doc_num)`,
   },
   {
     id: "02",
+    company: "Spark",
+    logo: "/logos/spark.png",
+    edgeColor: "#FFFFF9",
+    lightBg: true,
+    url: "https://www.linkedin.com/company/spark-influencer/",
+    period: "08/2024 – 04/2026",
+    role: "Full Stack Engineer",
+    description:
+      "Segundo maior contribuidor do front-end da Sphera, plataforma interna de campanhas de marketing de influência: 461 de 1.592 commits em 19 meses com React.js, TypeScript e Next.js. Entreguei exclusividade de influenciadores de ponta a ponta em Python e FastAPI, uma SQLAlchemy hybrid property resolvendo conflitos entre propostas, cenários, campanhas, marcas e clientes. Criei os component sets de campanha e influenciador usados em todas as abas, reduzindo a entrega de uma nova tela de três dias para meio dia.",
+    code: `// React — componente de exclusividade tipado
+interface ExclusivityBadgeProps {
+  influencerId: string
+  brandId: string
+}
+
+export const ExclusivityBadge: FC<ExclusivityBadgeProps> = ({
+  influencerId, brandId
+}) => {
+  const { data } = useExclusivity(influencerId, brandId)
+  if (!data?.active) return null
+  return <Badge variant="warning">{data.until}</Badge>
+}
+
+# FastAPI — hybrid property SQLAlchemy
+class Influencer(Base):
+  @hybrid_property
+  def has_active_exclusivity(self) -> bool:
+    return any(
+      e.brand_id == self.brand_id and e.active
+      for e in self.exclusivities
+    )`,
+  },
+  {
+    id: "04",
     company: "CoreLab",
     logo: "/logos/corelab.png",
     edgeColor: "#8D3CFB",
@@ -123,7 +160,7 @@ services:
       POSTGRES_DB: corelab_dev`,
   },
   {
-    id: "03",
+    id: "05",
     company: "Blume Talk",
     logo: "/logos/blumetalk.png",
     edgeColor: "#BB6DE0",
@@ -160,7 +197,7 @@ describe('AuthService', () => {
 })`,
   },
   {
-    id: "04",
+    id: "06",
     company: "Kenzie",
     logo: "/logos/kenzie.png",
     edgeColor: "#0000FE",
@@ -195,7 +232,7 @@ cron.schedule('0 8 * * 1', async () => {
 })`,
   },
   {
-    id: "05",
+    id: "07",
     company: "Prime Interway",
     logo: "/logos/prime.png",
     edgeColor: "#0B0B2D",
@@ -321,7 +358,7 @@ export default function Experience() {
                     }
                   />
                 ) : (
-                  <CoinInitials>?</CoinInitials>
+                  <CoinInitials>{exp.initials ?? "?"}</CoinInitials>
                 )}
               </CoinFront>
               <CoinBack
@@ -338,7 +375,7 @@ export default function Experience() {
                     }
                   />
                 ) : (
-                  <CoinInitials>?</CoinInitials>
+                  <CoinInitials>{exp.initials ?? "?"}</CoinInitials>
                 )}
               </CoinBack>
               {Array.from({ length: COIN_SEGMENTS }).map((_, i) => (
