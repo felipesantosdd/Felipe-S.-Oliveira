@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Space_Grotesk, Major_Mono_Display, JetBrains_Mono } from "next/font/google";
 import StyledComponentsRegistry from "@/lib/StyledComponentsRegistry";
 import GlobalStyles from "@/styles/GlobalStyles";
+import { LanguageProvider } from "@/contexts/LanguageContext";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -47,7 +48,9 @@ export default function RootLayout({
       <body>
         <StyledComponentsRegistry>
           <GlobalStyles />
-          {children}
+          <LanguageProvider>
+            {children}
+          </LanguageProvider>
         </StyledComponentsRegistry>
       </body>
     </html>

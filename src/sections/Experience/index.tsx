@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useRef, useEffect } from "react";
+import { useTranslation } from "@/contexts/LanguageContext";
 import { useTypewriter } from "@/hooks/useTypewriter";
 import { tokenize, sliceTokens } from "@/lib/syntaxHighlight";
 import {
@@ -266,11 +267,13 @@ def sync_orders(since: datetime):
 
 /* ── Componente ── */
 export default function Experience() {
+  const { t } = useTranslation();
   const [active, setActive] = useState(0);
   const exp = EXPERIENCES[active];
+  const expT = t.experience.entries.find((e) => e.id === exp.id) ?? t.experience.entries[0];
 
   // Typewriter: descrição (lento — conteúdo principal)
-  const { displayed, done } = useTypewriter(exp.description, 28);
+  const { displayed, done } = useTypewriter(expT.description, 28);
 
   // Typewriter: código de fundo
   const { displayed: displayedCode } = useTypewriter(exp.code, 15);
@@ -296,19 +299,16 @@ export default function Experience() {
         <SectionHeader>
           <HeaderLeft>
             <SectionNumber>03</SectionNumber>
-            <SectionTag>// TRAJETÓRIA</SectionTag>
-            <SectionTag>EXPERIÊNCIA</SectionTag>
+            <SectionTag>{t.experience.sectionTag}</SectionTag>
+            <SectionTag>{t.experience.sectionLabel}</SectionTag>
           </HeaderLeft>
 
           <HeaderCenter>
-            <HeadingWhite>Processos reais</HeadingWhite>
-            <HeadingRed>soluções escaláveis</HeadingRed>
+            <HeadingWhite>{t.experience.headingWhite}</HeadingWhite>
+            <HeadingRed>{t.experience.headingRed}</HeadingRed>
           </HeaderCenter>
 
-          <HeaderRight>
-            Atuação em projetos full stack com foco em arquitetura moderna,
-            integrações e evolução contínua de aplicações produtivas.
-          </HeaderRight>
+          <HeaderRight>{t.experience.headerRight}</HeaderRight>
         </SectionHeader>
 
         {/* Tabs */}

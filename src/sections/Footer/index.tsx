@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslation } from "@/contexts/LanguageContext";
 import {
   FooterSection,
   FooterInner,
@@ -48,10 +49,6 @@ const EmailSvg = () => (
   </svg>
 );
 
-/* ── Nav data ── */
-const SERVICES = ["Ferramentas", "Projetos", "Experiências", "FAQ", "Contato"];
-const CONTACTS = ["Whatsapp", "LinkedIn", "Github", "Email"];
-
 const SOCIALS = [
   { label: "WhatsApp", href: "https://wa.me/5535999582766",                    Icon: WhatsAppSvg },
   { label: "LinkedIn",  href: "https://www.linkedin.com/in/felipe-oliver/",    Icon: LinkedInSvg },
@@ -59,7 +56,10 @@ const SOCIALS = [
   { label: "Email",     href: "mailto:felipesantosdd@gmail.com",               Icon: EmailSvg },
 ];
 
+const CONTACTS = ["Whatsapp", "LinkedIn", "Github", "Email"];
+
 export default function Footer() {
+  const { t } = useTranslation();
   return (
     <FooterSection>
       <FooterInner>
@@ -69,24 +69,24 @@ export default function Footer() {
           <BrandCol>
             <BrandName>CRIMSOM MIND TECH//</BrandName>
             <BrandTags>
-              <BrandTag>Desenvolvimento Full Stack</BrandTag>
-              <BrandTag>Arquitetura Moderna</BrandTag>
-              <BrandTag>Integrações &amp; Automação</BrandTag>
+              {t.footer.tags.map((tag) => (
+                <BrandTag key={tag}>{tag}</BrandTag>
+              ))}
             </BrandTags>
           </BrandCol>
 
           <NavSection>
             <NavCol>
-              <NavLabel>// SERVIÇOS</NavLabel>
+              <NavLabel>{t.footer.servicesLabel}</NavLabel>
               <NavLinks>
-                {SERVICES.map((s) => (
+                {t.footer.services.map((s) => (
                   <NavLink key={s} href="#">{s}</NavLink>
                 ))}
               </NavLinks>
             </NavCol>
 
             <NavCol>
-              <NavLabel>// CONTATO</NavLabel>
+              <NavLabel>{t.footer.contactLabel}</NavLabel>
               <NavLinks>
                 {CONTACTS.map((c) => (
                   <NavLink key={c} href="#">{c}</NavLink>
@@ -100,7 +100,7 @@ export default function Footer() {
         <ContactRow>
           <ContactLabel>
             <ContactDash />
-            Contacte-me
+            {t.footer.contactMe}
           </ContactLabel>
 
           <SocialIcons>
@@ -120,9 +120,7 @@ export default function Footer() {
 
         {/* ── Bottom bar ── */}
         <FooterBottom>
-          <Copyright>
-            © 2025 Crimsom Mind Tech – Todos os direitos reservados
-          </Copyright>
+          <Copyright>{t.footer.copyright}</Copyright>
           <DesignCredit>Design By Talessa Rodrigues</DesignCredit>
         </FooterBottom>
 

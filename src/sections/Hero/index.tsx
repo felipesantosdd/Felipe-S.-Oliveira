@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslation } from "@/contexts/LanguageContext";
 import HeroBg from "@/components/ui/HeroBg";
 import HeroDecorators from "@/components/ui/HeroDecorators";
 import ScrambleInfoRows from "@/components/ui/ScrambleInfoRows";
@@ -31,6 +32,7 @@ import {
 } from "./styles";
 
 export default function Hero() {
+  const { t } = useTranslation();
   return (
     <HeroSection>
       <HeroBg />
@@ -70,11 +72,11 @@ export default function Hero() {
 
           <DescriptionCell>
             <DescriptionText>
-              Desenvolvendo sistemas escaláveis,{" "}
+              {t.hero.desc1}{" "}
               <DescriptionHighlight>
-                aplicações robustas e arquitetura modernas para
+                {t.hero.desc2}
               </DescriptionHighlight>{" "}
-              produtos digitais de alta performance.
+              {t.hero.desc3}
             </DescriptionText>
           </DescriptionCell>
 
@@ -92,9 +94,9 @@ export default function Hero() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <ButtonLabel>[ CONTATO ]</ButtonLabel>
+            <ButtonLabel>{t.hero.contactLabel}</ButtonLabel>
             <ButtonBottom>
-              <ButtonTitle>INICIAR CONEXÃO</ButtonTitle>
+              <ButtonTitle>{t.hero.contactBtn}</ButtonTitle>
               <ButtonIcon>
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                   <path

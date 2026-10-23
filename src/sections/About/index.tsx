@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslation } from "@/contexts/LanguageContext";
 import {
   AboutSection,
   AboutInner,
@@ -27,50 +28,27 @@ import {
   CardDesc,
 } from "./styles";
 
-/* ── Info cards data ── */
-const CARDS = [
-  {
-    icon: "M.",
-    category: "// PERFIL",
-    title: "Mais de 6 anos criando aplicações modernas e escaláveis",
-    desc: "Experiência em desenvolvimento full stack com foco em performance,\narquitetura moderna e integrações robustas.",
-  },
-  {
-    icon: "▽.",
-    category: "// ESPECIALIDADES",
-    title: "React, Node.js, Python e ecossistemas modernos",
-    desc: "Atuação prática com APIs REST, automações, componentização e\ndesenvolvimento orientado à escalabilidade.",
-  },
-  {
-    icon: "✕.",
-    category: "// DIFERENCIAL",
-    title: "Código limpo, visão estratégica e evolução contínua",
-    desc: "Colaboração próxima entre produto, design e engenharia para\nconstruir experiências digitais mais sólidas.",
-  },
-];
+const CARD_ICONS = ["M.", "▽.", "✕."];
 
 /* ── Component ── */
 export default function About() {
+  const { t } = useTranslation();
   return (
     <AboutSection>
       <AboutInner>
         <SectionHeader>
           <HeaderLeft>
             <SectionNumber>05</SectionNumber>
-            <SectionTag>// SOBRE O DESENVOLVEDOR</SectionTag>
+            <SectionTag>{t.about.sectionTag1}</SectionTag>
             <SectionTag>FELIPE S. OLIVEIRA</SectionTag>
           </HeaderLeft>
 
           <HeaderCenter>
-            <HeadingWhite>Tecnologia com</HeadingWhite>
-            <HeadingRed>visão estratégica</HeadingRed>
+            <HeadingWhite>{t.about.headingWhite}</HeadingWhite>
+            <HeadingRed>{t.about.headingRed}</HeadingRed>
           </HeaderCenter>
 
-          <HeaderRight>
-            Engenheiro de software com mais de 6 anos de experiência em
-            desenvolvimento full stack, especializado em aplicações modernas,
-            integrações robustas e arquitetura escalável.
-          </HeaderRight>
+          <HeaderRight>{t.about.headerRight}</HeaderRight>
         </SectionHeader>
         {/* Split: photo + cards */}
         <AboutSplit>
@@ -85,10 +63,10 @@ export default function About() {
 
         {/* ── Info cards ── */}
         <CardsColumn>
-          {CARDS.map((card) => (
+          {t.about.cards.map((card, i) => (
             <InfoCard key={card.category}>
               <CardIconWrap>
-                <CardIcon>{card.icon}</CardIcon>
+                <CardIcon>{CARD_ICONS[i]}</CardIcon>
               </CardIconWrap>
               <CardBody>
                 <CardCategory>{card.category}</CardCategory>

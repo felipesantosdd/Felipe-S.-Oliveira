@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslation } from "@/contexts/LanguageContext";
 import {
   ToolsSection,
   ToolsInner,
@@ -53,7 +54,7 @@ function ToolItem({ tool }: { tool: Tool }) {
 }
 
 export default function Tools() {
-  // Repete 8x — metade (~5500px) garante cobertura em qualquer tela sem gap
+  const { t } = useTranslation();
   const repeat = (arr: Tool[], n = 8) => Array(n).fill(arr).flat() as Tool[];
   const row1 = repeat(ROW_1);
   const row2 = repeat(ROW_2);
@@ -62,7 +63,7 @@ export default function Tools() {
     <ToolsSection>
       <ToolsInner>
         <ToolsHeader>
-          <HeaderLabel>// ARSENAL DE TECNOLOGIAS</HeaderLabel>
+          <HeaderLabel>{t.tools.label}</HeaderLabel>
           <HeaderStatus>ACTIVE STACK • FULL OPERATION</HeaderStatus>
         </ToolsHeader>
       </ToolsInner>

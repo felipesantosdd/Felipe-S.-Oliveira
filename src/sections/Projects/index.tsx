@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useTranslation } from "@/contexts/LanguageContext";
 import {
   ProjectsSection,
   ProjectsInner,
@@ -246,7 +247,8 @@ const PROJECTS_CONFIDENTIAL: Project[] = [
 ];
 
 /* ── Card ── */
-function Card({ project }: { project: Project }) {
+function Card({ project, description }: { project: Project; description: string }) {
+  const { t } = useTranslation();
   const [denied, setDenied] = useState(false);
   const [activeImg, setActiveImg] = useState(0);
 
@@ -277,8 +279,8 @@ function Card({ project }: { project: Project }) {
     <ProjectCard $denied={denied} onClick={handleClick}>
       {denied && (
         <AccessOverlay>
-          <AccessTitle>[ ACESSO NEGADO ]</AccessTitle>
-          <AccessSub>// PROJETO CONFIDENCIAL</AccessSub>
+          <AccessTitle>{t.projects.accessDenied}</AccessTitle>
+          <AccessSub>{t.projects.confidentialSub}</AccessSub>
           <AccessSub>CLEARANCE LEVEL INSUFFICIENT</AccessSub>
         </AccessOverlay>
       )}
@@ -314,19 +316,19 @@ function Card({ project }: { project: Project }) {
       </CardTop>
 
       {!showImage && (
-        <CardDescription>{project.description}</CardDescription>
+        <CardDescription>{description}</CardDescription>
       )}
 
       <CardDeploy $denied={denied} $public={!!project.url} $inDev={project.inDev}>
         {project.inDev
-          ? "// EM DESENVOLVIMENTO"
+          ? t.projects.inDev
           : project.url
           ? project.images
-            ? "VER EM PRODUÇÃO →"
-            : "VER NO GITHUB →"
+            ? t.projects.viewLive
+            : t.projects.viewGithub
           : denied
-          ? "[ NEGADO ]"
-          : "PROJETO CONFIDENCIAL ×"}
+          ? t.projects.denied
+          : t.projects.confidentialCard}
       </CardDeploy>
     </ProjectCard>
   );
@@ -334,6 +336,7 @@ function Card({ project }: { project: Project }) {
 
 /* ── Section ── */
 export default function Projects() {
+  const { t } = useTranslation();
   const repeat = (arr: Project[], n = 8) =>
     Array(n).fill(arr).flat() as Project[];
 
@@ -346,19 +349,16 @@ export default function Projects() {
         <SectionHeader>
           <HeaderLeft>
             <SectionNumber>04</SectionNumber>
-            <SectionTag>// SOLUÇÕES</SectionTag>
-            <SectionTag>PROJETOS E CASES</SectionTag>
+            <SectionTag>{t.projects.sectionTag}</SectionTag>
+            <SectionTag>{t.projects.sectionLabel}</SectionTag>
           </HeaderLeft>
 
           <HeaderCenter>
-            <HeadingWhite>Projetos em</HeadingWhite>
-            <HeadingRed>produção</HeadingRed>
+            <HeadingWhite>{t.projects.headingWhite}</HeadingWhite>
+            <HeadingRed>{t.projects.headingRed}</HeadingRed>
           </HeaderCenter>
 
-          <HeaderRight>
-            Projetos focados em arquitetura moderna, integração de sistemas
-            e experiências digitais performáticas.
-          </HeaderRight>
+          <HeaderRight>{t.projects.headerRight}</HeaderRight>
         </SectionHeader>
 
         <Divider />
@@ -367,17 +367,19 @@ export default function Projects() {
       <ProjectsGrid>
         <MarqueeTrack>
           <MarqueeRow $dir="left">
-            {row1.map((p, i) => (
-              <Card key={`r1-${i}`} project={p} />
-            ))}
+            {row1.map((p, i) => {
+              const trans = t.projects.public.find((x) => x.id === p.id);
+              return <Card key={`r1-${i}`} project={p} description={trans?.description ?? p.description} />;
+            })}
           </MarqueeRow>
         </MarqueeTrack>
 
         <MarqueeTrack>
           <MarqueeRow $dir="right">
-            {row2.map((p, i) => (
-              <Card key={`r2-${i}`} project={p} />
-            ))}
+            {row2.map((p, i) => {
+              const trans = t.projects.confidential.find((x) => x.id === p.id);
+              return <Card key={`r2-${i}`} project={p} description={trans?.description ?? p.description} />;
+            })}
           </MarqueeRow>
         </MarqueeTrack>
       </ProjectsGrid>

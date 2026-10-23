@@ -2,6 +2,7 @@
 
 import styled from "styled-components";
 import { useTextScramble } from "@/hooks/useTextScramble";
+import { useTranslation } from "@/contexts/LanguageContext";
 
 /* ── Styles ── */
 const Rows = styled.div`
@@ -49,34 +50,27 @@ const Value = styled.span`
   }
 `;
 
-/* ── Dados ── */
 const NOME_VALUES = ["Felipe S. Oliveira", "Crimson Mind Tech"];
-const FUNCAO_VALUES = [
-  "Fullstack Developer",
-  "Frontend Developer",
-  "Backend Developer",
-];
-const EXPERIENCIA_VALUE = ["6 anos"];
 
 /* ── Componente ── */
 export default function ScrambleInfoRows() {
-  // offsets escalonados para não mudarem todos ao mesmo tempo
+  const { t } = useTranslation();
   const nome = useTextScramble(NOME_VALUES, 0);
-  const funcao = useTextScramble(FUNCAO_VALUES, 1200);
-  const experiencia = useTextScramble(EXPERIENCIA_VALUE, 0);
+  const funcao = useTextScramble(t.scramble.roles, 1200);
+  const experiencia = useTextScramble([t.scramble.expValue], 0);
 
   return (
     <Rows>
       <Row>
-        <Label>NOME //&nbsp;</Label>
+        <Label>{t.scramble.nameLabel}</Label>
         <Value>{nome}</Value>
       </Row>
       <Row>
-        <Label>FUNÇÃO //&nbsp;</Label>
+        <Label>{t.scramble.roleLabel}</Label>
         <Value>{funcao}</Value>
       </Row>
       <Row>
-        <Label>EXPERIÊNCIA //&nbsp;</Label>
+        <Label>{t.scramble.expLabel}</Label>
         <Value>{experiencia}</Value>
       </Row>
     </Rows>

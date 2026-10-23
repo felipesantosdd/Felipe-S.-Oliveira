@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, useEffect, Fragment } from "react";
+import styled from "styled-components";
 import { useTextScramble } from "@/hooks/useTextScramble";
+import { useTranslation } from "@/contexts/LanguageContext";
 import {
   HeaderWrapper,
   HeaderInner,
@@ -25,19 +27,39 @@ import {
   MobileTag,
 } from "./styles";
 
-const NAV_ITEMS = [
-  { label: "Ferramentas", href: "#ferramentas" },
-  { label: "Projetos",    href: "#projetos" },
-  { label: "Experiência", href: "#experiencia" },
-  { label: "Sobre",       href: "#sobre" },
-  { label: "FAQ",         href: "#faq" },
-];
+/* ── Language toggle ── */
+const LangToggle = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: 16px;
+  flex-shrink: 0;
+`;
+
+const LangBtn = styled.button<{ $active: boolean }>`
+  font-family: var(--font-jetbrains), monospace;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 1px;
+  padding: 3px 7px;
+  border: 1px solid ${({ $active }) => ($active ? "#dc2626" : "#292929")};
+  background: ${({ $active }) => ($active ? "rgba(220,38,38,0.12)" : "transparent")};
+  color: ${({ $active }) => ($active ? "#f5f5f5" : "#4b5563")};
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border-radius: 2px;
+
+  &:hover {
+    color: #f5f5f5;
+    border-color: #dc2626;
+  }
+`;
 
 export default function Header() {
+  const { lang, setLang, t } = useTranslation();
   const name = useTextScramble(["Crimson Mind Tech", "Felipe S. Oliveira"], 0);
   const [open, setOpen] = useState(false);
 
-  /* Trava o scroll do body quando o menu mobile está aberto */
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
@@ -61,9 +83,8 @@ export default function Header() {
               <LogoScramble>{name}</LogoScramble>
             </LogoFallback>
 
-            {/* Nav desktop — aparece à esquerda do botão ao clicar */}
             <DesktopNav $open={open}>
-              {NAV_ITEMS.map(({ label, href }, i) => (
+              {t.nav.items.map(({ label, href }, i) => (
                 <Fragment key={href}>
                   {i > 0 && <DesktopNavSeparator />}
                   <DesktopNavLink
@@ -90,12 +111,18 @@ export default function Header() {
                   backgroundClip: "text",
                 }}
               >
-                Contato
+                {t.nav.contact}
               </DesktopNavLink>
+
+              <DesktopNavSeparator />
+              <LangToggle>
+                <LangBtn $active={lang === "pt"} onClick={() => setLang("pt")}>PT</LangBtn>
+                <LangBtn $active={lang === "en"} onClick={() => setLang("en")}>EN</LangBtn>
+              </LangToggle>
             </DesktopNav>
 
             <HamburgerButton
-              aria-label={open ? "Fechar menu" : "Abrir menu"}
+              aria-label={open ? t.nav.closeMenu : t.nav.openMenu}
               onClick={() => setOpen((v) => !v)}
             >
               <HamburgerLineTop    $open={open} />
@@ -106,10 +133,9 @@ export default function Header() {
         </HeaderInner>
       </HeaderWrapper>
 
-      {/* Overlay full-screen — apenas no mobile */}
       <MobileOverlay $open={open}>
         <MobileNav>
-          {NAV_ITEMS.map(({ label, href }) => (
+          {t.nav.items.map(({ label, href }) => (
             <MobileNavLink
               key={href}
               href={href}
@@ -130,8 +156,14 @@ export default function Header() {
             rel="noopener noreferrer"
             onClick={() => setOpen(false)}
           >
-            Contato →
+            {t.nav.contact} →
           </MobileContactLink>
+
+          {/* Language toggle mobile */}
+          <LangToggle style={{ marginTop: "24px", marginLeft: 0 }}>
+            <LangBtn $active={lang === "pt"} onClick={() => setLang("pt")}>PT</LangBtn>
+            <LangBtn $active={lang === "en"} onClick={() => setLang("en")}>EN</LangBtn>
+          </LangToggle>
         </MobileNav>
 
         <MobileMenuBottom>
