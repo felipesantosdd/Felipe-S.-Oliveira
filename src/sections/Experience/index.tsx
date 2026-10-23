@@ -49,8 +49,7 @@ const EXPERIENCES = [
   {
     id: "01",
     company: "Capgemini",
-    logo: "",
-    initials: "CGI",
+    logo: "/logos/capgemini.png",
     edgeColor: "#0070AD",
     lightBg: false,
     url: "https://www.linkedin.com/company/capgemini/",
@@ -92,7 +91,7 @@ async def sync_order(body: OrderSyncIn):
     company: "Spark",
     logo: "/logos/spark.png",
     edgeColor: "#FFFFF9",
-    lightBg: true,
+    lightBg: false,
     url: "https://www.linkedin.com/company/spark-influencer/",
     period: "08/2024 – 04/2026",
     role: "Full Stack Engineer",
@@ -358,7 +357,7 @@ export default function Experience() {
                     }
                   />
                 ) : (
-                  <CoinInitials>{exp.initials ?? "?"}</CoinInitials>
+                  <CoinInitials>?</CoinInitials>
                 )}
               </CoinFront>
               <CoinBack
@@ -375,7 +374,7 @@ export default function Experience() {
                     }
                   />
                 ) : (
-                  <CoinInitials>{exp.initials ?? "?"}</CoinInitials>
+                  <CoinInitials>?</CoinInitials>
                 )}
               </CoinBack>
               {Array.from({ length: COIN_SEGMENTS }).map((_, i) => (
